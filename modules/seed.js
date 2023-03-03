@@ -5,7 +5,7 @@ require('dotenv').config();
 
 mongoose.connect(process.env.MONGODB_URL);
 
-const Title = require('./models/Title');
+const Title = require('../models/Title');
 
 async function seed() {
 
