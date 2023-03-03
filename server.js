@@ -4,7 +4,7 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const watchmodeHandler = require('./watchmodeHandler');
+const watchmodeHandler = require('./modules/watchmodeHandler');
 
 const app = express();
 
@@ -24,7 +24,10 @@ db.once('open', function(){
 
 app.get('/', (req,res) => response.send('default route working'))
 
-app.get('/getTitles', watchmodeHandler.getRelativeTitles)
+app.get('/getTitles', watchmodeHandler.getRelativeTitles);
+app.get('/titleInfo', watchmodeHandler.getTitleInformation);
+app.post('/titleInfo', watchmodeHandler.postTitle);
+app.delete('/titleInfo', watchmodeHandler.deleteTitle);
 
 app.use((err, req, res, next)=> res.status(500).send('Something failed on the Server'));
 

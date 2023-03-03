@@ -1,8 +1,9 @@
 'use strict'
 
 const axios = require('axios');
-const staticData = require('./staticdata.json')
+const staticData = require('../staticdata.json');
 const cache = require('./cache');
+const titleModel = require('../models/Title');
 
 const handler = {};
 
@@ -28,7 +29,7 @@ handler.getRelativeTitles = function (req, res, next) {
 }
 class RelativeTitles{
   constructor(data){
-    this.name = data.name;
+    this.title = data.name;
     this.type = data.type;
     this.year = data.year;
     this.image_url = data.image_url;
@@ -37,20 +38,50 @@ class RelativeTitles{
 }
 
 handler.getTitleInformation = function(req,res,next){
-  const title = req.query.title;
-  const key = 'watchmode-' + title;
+  const titleID = req.query.titleID;
+  const key = 'watchmode-' + titleID;
   if (cache[key] && (Date.now() - cache[key].timestamp) < 86400000) {
     console.log('Cache Hit - Sending data from Cache');
     res.status(200).send(cache[key].data);
   } else {
     console.log('Cache Miss - Making new Request');
-    const url = `https://api.watchmode.com/v1/title/345534/details/?apiKey=YOUR_API_KEY`;
+    const url = `https://api.watchmode.com/v1/title/${titleID}/details/?apiKey=${process.env.WATCHMODE_API_KEY}&append_to_response=sources`;
     axios.get(url)
-      .then()
+      .then(response => new Title(response.data))
+      .then(formattedData => {
+        cache[key] = {};
+        cache[key].data = formattedData;
+        cache[key].timestamp = Date.now();
+        res.status(200).send(formattedData)
+      })
       .catch(err => next(err));
   }
 }
 
+class Title{
+  constructor(data){
+    this.email = 'example.gmail.com';
+    this.movieId = data.id;
+    this.title = data.title;
+    this.description = data.plot_overview;
+    this.releaseDate = data.year;
+    this.userRating = data.user_rating;
+    this.poster = data.poster;
+    this.sources = data.sources;
+  }
+}
 
+handler.postTitle = function (req, res, next){
+  titleModel.create(req.body)
+    .then(savedTitle => res.status(200).send(savedTitle))
+    .catch(err => next(err));
+}
+
+bookHandler.deleteTitle = function (req, res, next){
+  let id = req.params.id;
+  titleModel.findByIdAndDelete(id)
+    .then(deletedTitle => res.status(200).send(deletedTitle))
+    .catch(err => next(err));
+}
 
 module.exports = handler;
