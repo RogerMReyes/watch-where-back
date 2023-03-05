@@ -1,7 +1,7 @@
 'use strict'
 
 const axios = require('axios');
-const staticData = require('../staticdata.json');
+const staticData = require('./staticdata.json');
 const cache = require('./cache');
 const titleModel = require('../models/Title');
 
@@ -77,7 +77,7 @@ handler.postTitle = function (req, res, next){
     .catch(err => next(err));
 }
 
-bookHandler.deleteTitle = function (req, res, next){
+handler.deleteTitle = function (req, res, next){
   let id = req.params.id;
   titleModel.findByIdAndDelete(id)
     .then(deletedTitle => res.status(200).send(deletedTitle))
