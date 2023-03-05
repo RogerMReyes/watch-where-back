@@ -29,6 +29,11 @@ app.get('/titleInfo', watchmodeHandler.getTitleInformation);
 app.post('/titleInfo', watchmodeHandler.postTitle);
 app.delete('/titleInfo', watchmodeHandler.deleteTitle);
 
+app.get('/user', userHandler.getUser);
+app.post('/user', userHandler.postUser);
+app.put('/user', userHandler.putUser);
+app.delete('/user', userHandler.deleteUser);
+
 app.use((err, req, res, next)=> res.status(500).send('Something failed on the Server'));
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
