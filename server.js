@@ -6,6 +6,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const watchmodeHandler = require('./modules/watchmodeHandler');
 const userHandler = require('./modules/userHandler');
+const verifyUser = require('./Auth.js');
 
 const app = express();
 
@@ -27,6 +28,9 @@ app.get('/', (req,res) => response.send('default route working'))
 
 app.get('/getTitles', watchmodeHandler.getRelativeTitles);
 app.get('/titleInfo', watchmodeHandler.getTitleInformation);
+
+app.use(verifyUser);
+app.get('/profileTitles', watchmodeHandler.getProfileTitles);
 app.post('/titleInfo', watchmodeHandler.postTitle);
 app.delete('/titleInfo', watchmodeHandler.deleteTitle);
 

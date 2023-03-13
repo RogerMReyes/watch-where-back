@@ -40,7 +40,6 @@ class RelativeTitles{
 handler.getTitleInformation = function(req,res,next){
   const titleID = req.query.titleID;
   const key = 'watchmode-' + titleID;
-  console.log(cache[key]);
   if (cache[key] && (Date.now() - cache[key].timestamp) < 86400000) {
     console.log('Cache Hit - Sending data from Cache');
     res.status(200).send(cache[key].data);
@@ -71,8 +70,14 @@ class Title{
   }
 }
 
+handler.getProfileTitles = function(req,res,next){
+  titleModel.find({email: req.user.email})
+    .then(titles => res.status(200).send(titles))
+    .catch(err => next(err));
+}
+
 handler.postTitle = function (req, res, next){
-  titleModel.create(req.body)
+  titleModel.create({...req.body, email: req.user.email})
     .then(savedTitle => res.status(200).send(savedTitle))
     .catch(err => next(err));
 }
