@@ -5,6 +5,7 @@ require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const watchmodeHandler = require('./modules/watchmodeHandler');
+const userHandler = require('./modules/userHandler');
 
 const app = express();
 
