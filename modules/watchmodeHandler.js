@@ -40,6 +40,7 @@ class RelativeTitles{
 handler.getTitleInformation = function(req,res,next){
   const titleID = req.query.titleID;
   const key = 'watchmode-' + titleID;
+  console.log(cache[key]);
   if (cache[key] && (Date.now() - cache[key].timestamp) < 86400000) {
     console.log('Cache Hit - Sending data from Cache');
     res.status(200).send(cache[key].data);
@@ -60,7 +61,6 @@ handler.getTitleInformation = function(req,res,next){
 
 class Title{
   constructor(data){
-    this.email = 'example.gmail.com';
     this.movieId = data.id;
     this.title = data.title;
     this.description = data.plot_overview;
