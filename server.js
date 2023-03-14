@@ -32,12 +32,12 @@ app.get('/titleInfo', watchmodeHandler.getTitleInformation);
 app.use(verifyUser);
 app.get('/profileTitles', watchmodeHandler.getProfileTitles);
 app.post('/titleInfo', watchmodeHandler.postTitle);
-app.delete('/titleInfo', watchmodeHandler.deleteTitle);
+app.delete('/titleInfo/:id', watchmodeHandler.deleteTitle);
 
 app.get('/user', userHandler.getUser);
 app.post('/user', userHandler.postUser);
-app.put('/user', userHandler.putUser);
-app.delete('/user', userHandler.deleteUser);
+app.put('/user/:id', userHandler.putUser);
+
 
 app.use((err, req, res, next)=> res.status(500).send('Something failed on the Server'));
 
