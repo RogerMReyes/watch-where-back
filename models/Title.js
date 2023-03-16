@@ -12,7 +12,8 @@ const TitleSchema = new Schema({
   releaseDate: String,
   userRating: Number,
   poster: String,
-  sources: [Schema.Types.Mixed]
+  sources: [Schema.Types.Mixed],
+  notes: String
 });
 
 module.exports = mongoose.model('Title', TitleSchema);
