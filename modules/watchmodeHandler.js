@@ -82,6 +82,14 @@ handler.postTitle = function (req, res, next){
     .catch(err => next(err));
 }
 
+handler.putTitle = function(req,res,next){
+  console.log(req.body);
+  const id = req.params.id;
+  titleModel.findByIdAndUpdate(id, req.body, {new:true})
+    .then(updatedUser => res.status(200).send(updatedUser))
+    .catch(err => next(err));
+}
+
 handler.deleteTitle = function (req, res, next){
   let id = req.params.id;
   titleModel.findByIdAndDelete(id)
