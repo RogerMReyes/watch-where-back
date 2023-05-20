@@ -23,12 +23,12 @@ db.once('open', function(){
   console.log('Mongoose is connected');
 })
 
-app.get('/', (req,res) => response.send('default route working'))
+app.get('/', (req,res) => res.send('default route working'))
 
 app.get('/getTitles', watchmodeHandler.getRelativeTitles);
 app.get('/titleInfo', watchmodeHandler.getTitleInformation);
 
-app.use(verifyUser);
+// app.use(verifyUser);
 app.get('/profileTitles', watchmodeHandler.getProfileTitles);
 app.post('/titleInfo', watchmodeHandler.postTitle);
 app.put('/titleInfo/:id', watchmodeHandler.putTitle);
