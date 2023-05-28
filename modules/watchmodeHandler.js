@@ -27,8 +27,8 @@ handler.getRelativeTitles = function (req, res, next) {
       .catch(err => next(err));
   }
 }
-class RelativeTitles{
-  constructor(data){
+class RelativeTitles {
+  constructor(data) {
     this.title = data.name;
     this.type = data.type;
     this.year = data.year;
@@ -37,7 +37,7 @@ class RelativeTitles{
   }
 }
 
-handler.getTitleInformation = function(req,res,next){
+handler.getTitleInformation = function (req, res, next) {
   const titleID = req.query.titleID;
   const key = 'watchmode-' + titleID;
   if (cache[key] && (Date.now() - cache[key].timestamp) < 86400000) {
@@ -58,8 +58,8 @@ handler.getTitleInformation = function(req,res,next){
   }
 }
 
-class Title{
-  constructor(data){
+class Title {
+  constructor(data) {
     this.movieId = data.id;
     this.title = data.title;
     this.description = data.plot_overview;
@@ -70,27 +70,29 @@ class Title{
   }
 }
 
-handler.getProfileTitles = function(req,res,next){
-  titleModel.find({email: req.user.email})
+handler.getProfileTitles = function (req, res, next) {
+  // titleModel.find({email: req.user.email})
+  titleModel.find({})
     .then(titles => res.status(200).send(titles))
     .catch(err => next(err));
 }
 
-handler.postTitle = function (req, res, next){
-  titleModel.create({...req.body, email: req.user.email})
+handler.postTitle = function (req, res, next) {
+  // titleModel.create({...req.body, email: req.user.email})
+  titleModel.create(req.body)
     .then(savedTitle => res.status(200).send(savedTitle))
     .catch(err => next(err));
 }
 
-handler.putTitle = function(req,res,next){
-  console.log(req.body);
+handler.putTitle = function (req, res, next) {
+  // console.log(req.body);
   const id = req.params.id;
-  titleModel.findByIdAndUpdate(id, req.body, {new:true})
+  titleModel.findByIdAndUpdate(id, req.body, { new: true })
     .then(updatedUser => res.status(200).send(updatedUser))
     .catch(err => next(err));
 }
 
-handler.deleteTitle = function (req, res, next){
+handler.deleteTitle = function (req, res, next) {
   let id = req.params.id;
   titleModel.findByIdAndDelete(id)
     .then(() => res.status(200).send('Title deleted'))
